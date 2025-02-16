@@ -14,6 +14,14 @@ Crate docs
 cargo doc --open
 ```
 
+Release a binary for windows
+```
+brew install mingw-w64
+cargo build --release --target=x86_64-pc-windows-gnu --verbose
+```
+
+
+
 
 
 
