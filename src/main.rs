@@ -1,4 +1,4 @@
-use pomodoro::start_timer;
+use pomodoro::Countdown;
 use std::io;
 
 fn main() {
@@ -22,17 +22,20 @@ fn main() {
         match choice {
             1 => {
                 println!("Stay focued for 25m");
-                start_timer(1500);
+                let countdown = Countdown::new(1500);
+                countdown.start_timer();
                 break;
             }
             2 => {
                 println!("Take a short break for 5m");
-                start_timer(300);
+                let countdown = Countdown::new(300);
+                countdown.start_timer();
                 break;
             }
             3 => {
                 println!("Relax a little for 15m");
-                start_timer(900);
+                let countdown = Countdown::new(900);
+                countdown.start_timer();
                 break;
             }
             4 => {

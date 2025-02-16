@@ -7,34 +7,44 @@ use std::{
     time::SystemTime,
 };
 
-pub fn start_timer(countdown: u64) {
-    let start = SystemTime::now();
-    let countdown = Duration::from_secs(countdown);
+pub struct Countdown {
+    time: u64,
+}
 
-    let mut count = countdown.as_secs();
-
-    loop {
-        let count_to_str = seconds_to_time(count);
-        print!("\r{} ", count_to_str);
-
-        io::stdout().flush().unwrap();
-        sleep(Duration::new(1, 0));
-        if start.elapsed().unwrap() > countdown {
-            break;
-        }
-        count -= 1;
+impl Countdown {
+    pub fn new(time: u64) -> Self {
+        Self { time }
     }
 
-    play_audio();
+    pub fn start_timer(&self) {
+        let start = SystemTime::now();
+        let countdown = Duration::from_secs(self.time);
+
+        let mut count = countdown.as_secs();
+
+        loop {
+            let count_to_str = self.seconds_to_time(count);
+            print!("\r{} ", count_to_str);
+
+            io::stdout().flush().unwrap();
+            sleep(Duration::new(1, 0));
+            if start.elapsed().unwrap() > countdown {
+                break;
+            }
+            count -= 1;
+        }
+
+        play_audio();
+    }
+    pub fn seconds_to_time(&self, total_seconds: u64) -> String {
+        let minutes = (total_seconds % 3600) / 60;
+        let seconds = total_seconds % 60;
+
+        format!("{:02}:{:02}", minutes, seconds)
+    }
 }
 
-pub fn seconds_to_time(total_seconds: u64) -> String {
-    let minutes = (total_seconds % 3600) / 60;
-    let seconds = total_seconds % 60;
-
-    format!("{:02}:{:02}", minutes, seconds)
-}
-
+// Audio helper function
 fn play_audio() {
     let (_stream, stream_handle) = OutputStream::try_default().unwrap();
     let sink = Sink::try_new(&stream_handle).unwrap();
