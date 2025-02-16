@@ -12,10 +12,16 @@ pub struct Countdown {
 }
 
 impl Countdown {
+    /// Returns a new instance of Countdown
+    ///
+    /// # Example
+    ///
+    /// let countdown = Countdown::new(1500);
     pub fn new(time: u64) -> Self {
         Self { time }
     }
 
+    /// Start the countdown timer upto zero
     pub fn start_timer(&self) {
         let start = SystemTime::now();
         let countdown = Duration::from_secs(self.time);
@@ -36,6 +42,8 @@ impl Countdown {
 
         play_audio();
     }
+
+    /// Helper function to convert a number of seconds to time format
     pub fn seconds_to_time(&self, total_seconds: u64) -> String {
         let minutes = (total_seconds % 3600) / 60;
         let seconds = total_seconds % 60;
@@ -44,7 +52,7 @@ impl Countdown {
     }
 }
 
-// Audio helper function
+/// Audio helper function
 fn play_audio() {
     let (_stream, stream_handle) = OutputStream::try_default().unwrap();
     let sink = Sink::try_new(&stream_handle).unwrap();
